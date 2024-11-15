@@ -1,8 +1,8 @@
-import inquirer, { Answers } from "inquirer";
-import Truck from "./Truck.js";
-import Car from "./Car.js";
-import Motorbike from "./Motorbike.js";
-import Wheel from "./Wheel.js"; // Wheel import is now needed
+import inquirer from 'inquirer'; // Correct import for inquirer
+import Truck from './Truck.js';
+import Car from './Car.js';
+import Motorbike from './Motorbike.js';
+import Wheel from './Wheel.js'; // Wheel import is now needed
 
 // Define the Cli class
 class Cli {
@@ -28,22 +28,20 @@ class Cli {
           type: 'list',
           name: 'selectedVehicleVin',
           message: 'Select a vehicle to perform an action on',
-          choices: this.vehicles.map((vehicle) => {
-            return {
-              name: `${vehicle.vin} -- ${vehicle.make} ${vehicle.model}`,
-              value: vehicle.vin,
-            };
-          }),
+          choices: this.vehicles.map((vehicle) => ({
+            name: `${vehicle.vin} -- ${vehicle.make} ${vehicle.model}`,
+            value: vehicle.vin,
+          })),
         },
       ])
-      .then((answers: Answers) => {
+      .then((answers: { selectedVehicleVin: string }) => {
         this.selectedVehicleVin = answers.selectedVehicleVin;
         this.performActions();
       });
   }
 
   createVehicle(): void {
-    console.log("Creating a new vehicle...");
+    console.log('Creating a new vehicle...');
 
     inquirer
       .prompt([
@@ -55,7 +53,8 @@ class Cli {
         { type: 'number', name: 'weight', message: 'Enter weight (kg):' },
         { type: 'number', name: 'topSpeed', message: 'Enter top speed (mph):' },
       ])
-      .then((answers: Answers) => {
+      .then((answers: { vin: string, color: string, make: string, model: string, year: number, weight: number, topSpeed: number }) => {
+        // Initialize wheels for the new vehicle
         const wheels: Wheel[] = [
           new Wheel(16, 'Michelin'),
           new Wheel(16, 'Michelin'),
@@ -63,6 +62,7 @@ class Cli {
           new Wheel(16, 'Michelin'),
         ];
 
+        // Create a new Car using the provided answers
         const newCar = new Car(
           answers.vin,
           answers.color,
@@ -72,9 +72,10 @@ class Cli {
           answers.weight,
           answers.topSpeed,
           wheels,
-          4
+          4 // Assuming 4 doors for the car
         );
 
+        // Add the new car to the vehicles array
         this.vehicles.push(newCar);
         console.log('New car created!');
       });
@@ -92,10 +93,10 @@ class Cli {
           type: 'list',
           name: 'CreateOrSelect',
           message: 'Would you like to create a new vehicle or perform an action on an existing vehicle?',
-          choices: ['Create a new vehicle', 'Select an existing vehicle'],
+          choices: ['Create a new vehicle', 'Select an existing vehicle'], // Simple string choices
         },
       ])
-      .then((answers: Answers) => {
+      .then((answers: { CreateOrSelect: string }) => {
         if (answers.CreateOrSelect === 'Create a new vehicle') {
           this.createVehicle();
         } else {
