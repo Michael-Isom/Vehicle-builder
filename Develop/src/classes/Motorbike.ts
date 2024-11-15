@@ -1,60 +1,88 @@
-// Importing Vehicle and Wheel classes
 import Vehicle from './Vehicle.js';
 import Wheel from './Wheel.js';
 
-// TODO: The Motorbike class should extend the Vehicle class
-class Motorbike {
-  vin: string;       
-  color: string;     
-  make: string;     
-  model: string;     
-  year: number;      
-  weight: number;    
-  topSpeed: number;  
-  wheels: Wheel[];   
-}
-  // TODO: Declare properties of the Motorbike class
-  // TODO: The properties should include vin, color, make, model, year, weight, top speed, and wheels
-  // TODO: The types should be as follows: vin (string), color (string), make (string), model (string), year (number), weight (number), topSpeed (number), wheels (Wheel[])
-color: string;
-weight: number;
-topSpeed: number;
-wheels: Wheel[];
+class Motorbike extends Vehicle {
+  // Declare properties
+  override color: string;
+  override weight: number;
+  override topSpeed: number;
+  override wheels: Wheel[] = [];
+  engineCapacity: number; // New property for engine capacity
 
-constructor(
-  vin: string,
-  color: string,
-  make: string,
-  model: string,
-  year: number,
-  weight: number,
-  topSpeed: number,
-  wheels: Wheel[]
-) {
-  super(vin, make, model, year, weight, topSpeed, color, wheels);
-  this.color = color;
-  this.weight = weight;
-  this.topSpeed = topSpeed;
-  this.wheels = wheels;
+  constructor(
+    vin: string,
+    color: string,
+    make: string,
+    model: string,
+    year: number,
+    weight: number,
+    topSpeed: number,
+    wheels: Wheel[],
+    engineCapacity: number // New argument for engine capacity
+  ) {
+    super(vin, color, make, model, year, weight, topSpeed, wheels);
+    this.color = color;
+    this.weight = weight;
+    this.topSpeed = topSpeed;
+    this.engineCapacity = engineCapacity; // Initialize the engineCapacity property
 
-  if (this.wheels.length !== 2) {
-    this.wheels = [new Wheel(), new Wheel()];
+    // Ensure wheels array contains exactly 2 elements
+    if (wheels.length !== 2) {
+      this.wheels = [new Wheel(), new Wheel()];
+    } else {
+      this.wheels = wheels;
+    }
+  }
+
+  // Override wheelie method
+  wheelie(): void {
+    console.log(`Motorbike ${this.make} ${this.model} is doing a wheelie!`);
+  }
+
+  // Override printDetails method
+  override printDetails(): void {
+    super.printDetails();
+    console.log(`Motorbike color: ${this.color}`);
+    console.log(`Motorbike weight: ${this.weight}`);
+    console.log(`Motorbike top speed: ${this.topSpeed}`);
+    console.log(`Motorbike engine capacity: ${this.engineCapacity}cc`); // Print engine capacity
+  }
+
+  // Override start method
+  override start(): void {
+    super.start();
+    console.log('Motorbike started');
+  }
+
+  // Override accelerate method
+  override accelerate(change: number): void {
+    super.accelerate(change);
+    console.log(`Motorbike accelerated to ${this.currentSpeed} mph`);
+  }
+
+  // Override decelerate method
+  override decelerate(change: number): void {
+    super.decelerate(change);
+    console.log(`Motorbike decelerated to ${this.currentSpeed} mph`);
+  }
+
+  // Override stop method
+  override stop(): void {
+    super.stop();
+    console.log('Motorbike stopped');
+  }
+
+  // Override turn method
+  override turn(direction: string): void {
+    super.turn(direction);
+    console.log(`Motorbike turned ${direction}`);
+  }
+
+  // Override reverse method
+  override reverse(): void {
+    super.reverse();
+    console.log('Motorbike reversed');
   }
 }
 
-  // TODO: Create a constructor that accepts the properties of the Motorbike class
-    // TODO: The constructor should call the constructor of the parent class, Vehicle
-    // TODO: The constructor should initialize the properties of the Motorbike class
-    // TODO: The constructor should check if the wheels array has 2 elements and create 2 new default Wheel objects if it does not
-
-  // TODO: Implement the wheelie method
-    // TODO: The method should log the message "Motorbike [make] [model] is doing a wheelie!"
-
-  // TODO: Override the printDetails method from the Vehicle class
-  // TODO: The method should call the printDetails method of the parent class
-  // TODO: The method should log the details of the Motorbike
-  // TODO: The details should include the VIN, make, model, year, weight, top speed, color, and wheels
-}
-
-// Export the Motorbike class as the default export
 export default Motorbike;
